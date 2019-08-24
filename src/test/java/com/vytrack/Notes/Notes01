@@ -1,0 +1,213 @@
+Page Object Model is a design pattern for Automation-Testing Framework
+
+We know that every webside consist of a number of diffrent pages, and ewery pages is consist of diffrent type and shape of web elements.
+To do automation test for new developing website, we need to test every single web element on everysingle page of that specific webside. And make sure they are functioning correct. 100 persent fulfill its exception criteria and user story.
+
+To make it clear and easy to understand and easy to maintain we collect every webelement object and method in a single class belongs to that specific page named  Page class. Saparate it from the test class for that specific page.
+
+Pages Package
+	Pages classes
+Test Package
+	Test Classes
+Utilities Package
+
+
+synchronization issue
+
+There is always some difference between the code instruction and webside response.
+there are two main way to handle this situation in otomatin test steps using WebDriverWait abstruct class and its methods 
+implicit wait methods and 
+explicit wait methods.
+
+WebDriverWait wait = new WebDriverWait(Driver.getDriver(), timeout);
+ wait.until(ExpectedConditions
+ .elementToBeClickable(element));
+ .elementToBeSelected(locator));
+ .attributeContains(locator);
+=======================================================================================
+
+oday is 8/3/2019
+
+Agenda:
+	New framework
+	TestNG xml runners
+	How to run specific xml from terminal
+	How to parameterize test
+	Data provider
+	How to talk about framework
+
+#############
+We will talk about testng.xml files.
+
+How to parameterize tests.
+
+If you are trying to enter null text, you will get:
+
+java.lang.IllegalArgumentException: Keys to send should be a not null CharSequence
+
+How to create?
+
+Right click on the project -> new file -> runner.xml -> add heading <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" > and add suite. Inside a suite, we can create tests.
+
+We can create anything.xml in order to create runner for testng project. It's good practice to have smoketest.xml, regression.xml and some testngrunner/functionalrunner.xml.
+
+In testng we need to create a testng.xml in order to handle execution of multiple tests. We can specify classes, packages and methods that we want to include into run.
+
+For example regression.xml: testing of all test cases. At least in my prject, all automation scripts were included into regression suite. Sometimes, we need to run minor regression.
+Minor regression is when you are running scripts for one out couple modules of you application.
+
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+<suite name="Login tests">
+    <test name="Login Tests">
+        <parameter name="username" value="salesmanager110"></parameter>
+        <parameter name="password" value="UserUser123"></parameter>
+        <classes>
+            <class name="com.vytrack.tests.components.login_navigation.LoginTests"/>
+        </classes>
+    </test>
+</suite>
+
+I AM NOT GONNA PUSH ANYTHING UNTILL END OF THE CLASS
+
+Let's create a new testng runner.
+
+step 1. Create a .xml file for example myrunner.xml
+step 2. Put as a first line
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+
+This line indicates that this particular file stands for testng.
+
+<!--suites -> suite -> test -> groups -> package -> class -> method-->
+
+
+command/ctrl + / - to comment
+
+Once you type tag name, for example suite, you can click tab in order to auto generate opening and closing tags.
+
+
+Smoke test is about making sure that application is alive.
+
+We don't need folder for regression script. Because, almost all our tests scripts will be included into regression.
+
+ <classes>
+            <class name="com.vytrack.tests.components.login_navigation.LoginTests">
+                <methods>
+                    <include name="loginWithParameters"/>
+                </methods>
+            </class>
+        </classes>
+
+
+if you want to choose one ore more specific methods.
+
+
+
+ <class name="com.vytrack.tests.components.activities.CalendarEventsTests"/>
+            <class name="com.vytrack.tests.components.login_navigation.LoginTests">
+                <methods>
+                    <exclude name="loginWithParameters"></exclude>
+                </methods>
+            </class>
+
+
+means that run all tests from both classes except  test with a name loginWithParameters.
+
+If you just specify class, it will run all tests from the class.
+
+Based on my experience, most of the issues are related to code (locators, synchronization, etc)
+
+org.openqa.selenium.ElementNotInteractableException: element not interactable
+
+This is an example of not sufficient wait time.
+
+
+We use data provider in testng in order to perform data driver testing. For example when you want login with 10 different credentials (sets of username/password) you don't need to duplicate 10 tests. You can use only one test and pull data from data provider. Thus, we can avoid code duplication.
+
+
+@DataProvider(name = "credentials_info")
+    public static Object[][] credentials() {
+        return new Object[][] { { "storemanager85", "UserUser123" },
+                                { "salesmanager110", "UserUser123" }};
+
+    }
+      @Test(dataProvider = "credentials_info") // get data from data provider
+    public void loginWithDataProvider(String username, String password) {
+
+    }
+
+DataProvider should be public static Object[][]. That means it returns 2d array of objects. Once you will pass values from data provider, test will take this 2d array as a key-value pair (map)
+
+1st run. username = storemanager85, password = UserUser123.
+2nd run. username = salesmanager110, password = UserUser123.
+
+If you want to have dataprovider in different class, you to specify where data provider is located.
+
+@Test(dataProvider = "credentials_info", dataProviderClass=DataProviderClass.class) // get data from data provider
+    public void loginWithDataProvider(String username, String password) {
+
+    }
+
+@DataProvider(name = "credentials_info") - indicates that this method is data provider with a name credentials_info.
+
+
+ //Data provider allows to do DDT
+    //same test - different data set
+    //you can get information from excel file and return it as 2d array
+    //the pass it into data provider, and make tests use it
+    @DataProvider(name = "credentials_info")
+    public static Object[][] credentials() {
+        return new Object[][] { { "storemanager85", "UserUser123" },
+                                { "salesmanager110", "UserUser123" },
+                                { "salesmanager133", "UserUser123" },
+                                { "salesmanager65", "UserUser123" }};
+
+    }
+Again, this data provider has 4 data sets. That means test will be running 4 times with different data set.
+
+We can have multiple data providers. IN order to call any data provider, you need to specify name.
+
+
+@Test(dataProvider = "credentials_info")
+
+
+###################
+mvn verify
+mvn clean verify
+mvn test
+
+ mvn clean verify -P Parameterized -Drunner=mytestngrunner.xml
+
+ To run Parameterized profile.
+-Drunner=mytestngrunner.xml - to run specific xml file
+#######################
+What is framework?
+
+Environment that we use to develop automation scripts calls framework.
+Framework provides to the SDET various benefits that help do develop test automation scripts.
+Test automation framework use different concepts, practices, coding standards to achieve ease of scripting, scalability, modularity, re-usability, maintenance.
+
+In my project, we use java as a programming language. My framework created as a maven project.
+We use maven in order to manage decencies, store information about project and run out tests with maven goals.
+In my project, we use Page Object model. According to this design pattern, we are creating page classes
+for every page of application. Name of page class corresponds to the name of web page.
+For example: for login page - LopinPage.java class.
+In addition to POM we use PageFactory in order to simplify process of creating web elements.
+We just have to use @FindBy annotation(locatorType=value) on top of webelement in order to find element on the page.
+To make pagefactory work, we need to initialize it.
+
+ public BasePage() {
+        PageFactory.initElements(Driver.getDriver(), this);
+  }
+
+  We don't need to repeat this step in every page class because we did already inside a BasePage abstract class.
+  So this class a parent class for every PageClass of my framework.
+  BasePage is an abstract because it shouldn't instantiated. BasePage class initialzes PageFactory and
+  has web elements and method that are common for all page classes.
+  For example pageName (pageSubtitle) element has same locator on every page of application.
+  Or method that performs navigation. BasePage class is a super class for all page classes.
+  Then we have TestBase class that provides setup and teardown for every test.
+  Every test class extends TestBase class. Then we have Pages class that follows PageFactory design pattern.
+  Pages class contains methods that return instances of page classes. I would say it's a page class hub.
+  It allows to access easily any page class. In the test class, instead of creating bunch of page objects,
+  we can create object of Pages, and this object can access any other page class.
+  Then we have properties file for project configuration. It contains links, credentials, connection strings, etc.

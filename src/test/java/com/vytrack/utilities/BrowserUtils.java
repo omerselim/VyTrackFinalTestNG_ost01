@@ -448,7 +448,9 @@ public class BrowserUtils {
         JavascriptExecutor jse = (JavascriptExecutor) Driver.getDriver();
         jse.executeScript(command);
     }
-
+//===========================================================================================================
+//    SCREENSHOT
+//===========================================================================================================
     /*
      * takes screenshot
      * @param name
@@ -456,13 +458,15 @@ public class BrowserUtils {
      */
     public static String getScreenshot(String name) {
         // name the screenshot with the current date time to avoid duplicate name
-        String date = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_hh:mm:ss a"));
-
+//        String date = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_hh:mm:ss a"));          // original1
+//        String date = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy_MMdd_hh_mm_ss_a"));         // original2
+        String date1 = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyMMdd_HHmm"));                   //  ost
+        String date2 = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yy-MM-dd"));
         // TakesScreenshot ---> interface from selenium which takes screenshots
         TakesScreenshot ts = (TakesScreenshot) Driver.getDriver();
         File source = ts.getScreenshotAs(OutputType.FILE);
         // full path to the screenshot location
-        String target = System.getProperty("user.dir") + "/test-output/Screenshots/" + name + date + ".png";
+        String target = System.getProperty("user.dir") + "/test-output/screenshots/"+date2+"/" + name +"_"+ date1 + ".png";
 
         File finalDestination = new File(target);
 
@@ -474,7 +478,7 @@ public class BrowserUtils {
         }
         return target;
     }
-
+//===================================================================================================
 
     public static void waitForPresenceOfElement(By by, long time) {
         new WebDriverWait(Driver.getDriver(), time).until(ExpectedConditions.presenceOfElementLocated(by));

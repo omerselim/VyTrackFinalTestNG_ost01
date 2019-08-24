@@ -9,12 +9,14 @@ import com.aventstack.extentreports.reporter.ExtentHtmlReporter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.ITestResult;
 import org.testng.annotations.*;
 import org.testng.asserts.SoftAssert;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.concurrent.TimeUnit;
 
@@ -42,7 +44,15 @@ public class TestBase {
         if (test == null) {
             test = "reports";
         }
-        String filePath = System.getProperty("user.dir") + "/test-output/" + test + "/" + LocalDate.now().format(DateTimeFormatter.ofPattern("MM_dd_yyyy")) + "/report.html";
+
+//      String date = LocalDate.now().format(DateTimeFormatter.ofPattern("MM_dd_yyyy"));                                           //original
+        String date = LocalDate.now().format(DateTimeFormatter.ofPattern("yy-MM-dd"));
+//        String  dateTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyMMdd_HHmm"));            // 12 hours period
+        String  dateTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyMMdd_HHmm"));              // 24 hours period
+
+        String filePath = System.getProperty("user.dir") + "/test-output/" + test + "/" + date + "/report_"+dateTime+".html";
+//      String filePath = System.getProperty("user.dir") + "/test-output/" + test + "/" + date + "/report.html";                    // original
+
         htmlReporter = new ExtentHtmlReporter(filePath);
         logger.info("Report path: "+filePath);
         report.attachReporter(htmlReporter);

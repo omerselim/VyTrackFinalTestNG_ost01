@@ -1,14 +1,16 @@
 package com.vytrack.pages.login_navigation;
 
+import com.vytrack.utilities.BasePage;
 import com.vytrack.utilities.BrowserUtils;
 import com.vytrack.utilities.ConfigurationReader;
 import com.vytrack.utilities.Driver;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.CacheLookup;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
-public class LoginPage {
+public class LoginPage extends BasePage {
     public LoginPage(){PageFactory.initElements(Driver.getDriver(), this);}
 
     @FindBy(id = "prependedInput")
@@ -45,8 +47,8 @@ public class LoginPage {
         String username = ConfigurationReader.getProperty("storemanagerusername");
         String password = ConfigurationReader.getProperty("storemanagerpassword");
         userNameElement.sendKeys(username);
-        passwordElement.sendKeys(password);
-        loginButtonElement.click();
+        passwordElement.sendKeys(password,Keys.ENTER);
+//        loginButtonElement.click();
     }
 
     public String getErrorMessage(){

@@ -19,25 +19,79 @@ public class CalendarEventsTests extends TestBase {
         //go to Calendar Events page
 
         pages.dashboardPage().navigateToModule("Activities", "Calendar Events");
+        pages.calendarEventsPage().waitUntilLoaderScreenDisappear();
+
+
+//------
+        //to open grid settings menu
+        pages.calendarEventsPage().gridSettingsElement.click();
+        extentLogger.info("Click on grid settings button.");
+
 
         //deselect title option from grid settings
         pages.calendarEventsPage().selectGridSetting("Title", false);
-        BrowserUtils.waitPlease(3);
+        BrowserUtils.waitPlease(2);
 
-        //Verify that title column name is not visible any more
-        Assert.assertFalse(pages.calendarEventsPage().verifyHeaderExists("Title"), "Title column name still visible.");
-        extentLogger.pass("Verified that title column name is not visible any more.");
+        //deselect title option from grid settings
+        pages.calendarEventsPage().selectGridSetting("Calendar", false);
+        BrowserUtils.waitPlease(2);
+
+        //deselect title option from grid settings
+        pages.calendarEventsPage().selectGridSetting("Start", false);
+        BrowserUtils.waitPlease(2);
 
         //to close grid settings menu
         pages.calendarEventsPage().gridSettingsElement.click();
         extentLogger.info("Click on grid settings button.");
+//-------
+        //Verify that title column name is not visible any more
+        Assert.assertFalse(pages.calendarEventsPage().verifyHeaderExists("Title"),
+                                                                            "Title column name still visible.");
+        extentLogger.pass("Verified that title column name is not visible any more.");
 
-        //select title option again
+        Assert.assertFalse(pages.calendarEventsPage().verifyHeaderExists("Calendar"),
+                "Calendar column name still visible.");
+        extentLogger.pass("Verified that Calendar column name is not visible any more.");
+
+        Assert.assertFalse(pages.calendarEventsPage().verifyHeaderExists("Start"),
+                "Start column name still visible.");
+        extentLogger.pass("Verified that Start column name is not visible any more.");
+//------
+        //to open grid settings menu
+        pages.calendarEventsPage().gridSettingsElement.click();
+        extentLogger.info("Click on grid settings button.");
+
+
+        //deselect title option from grid settings
         pages.calendarEventsPage().selectGridSetting("Title", true);
+        BrowserUtils.waitPlease(2);
 
+        //deselect title option from grid settings
+        pages.calendarEventsPage().selectGridSetting("Calendar", true);
+        BrowserUtils.waitPlease(2);
+
+        //deselect title option from grid settings
+        pages.calendarEventsPage().selectGridSetting("Start", true);
+        BrowserUtils.waitPlease(2);
+
+        //to close grid settings menu
+        pages.calendarEventsPage().gridSettingsElement.click();
+        extentLogger.info("Click on grid settings button.");
+//-------
         //Verify that title column name is visible again
-        Assert.assertTrue(pages.calendarEventsPage().verifyHeaderExists("Title"), "Title column is not visible.");
+        Assert.assertTrue(pages.calendarEventsPage().verifyHeaderExists("Title"),
+                                                                        "Title column name is not visible.");
         extentLogger.pass("Verified that title column name is visible again.");
+
+        Assert.assertTrue(pages.calendarEventsPage().verifyHeaderExists("Calendar"),
+                                                                        "Calendar column name is not visible.");
+        extentLogger.pass("Verified that Calendar column name is visible again.");
+
+        Assert.assertTrue(pages.calendarEventsPage().verifyHeaderExists("Start"),
+                                                                        "Start column name is not visible.");
+        extentLogger.pass("Verified that Start column name is visible again.");
+
+//------
     }
 
     @Test(description = "Verify that date auto adjustable")
@@ -55,7 +109,11 @@ public class CalendarEventsTests extends TestBase {
         pages.calendarEventsPage().clickOnCreateCalendarEvent();
         extentLogger.info("Click on create calendar event button.");
 
+        BrowserUtils.waitFor(3); /////////////////////////////////////////////////////
+
         pages.calendarEventsPage().selectStartOrEndDate("8/15/2019", "start");
+
+        BrowserUtils.waitFor(3); /////////////////////////////////////////////////////
 
         //    verify start date is the same as end date
         Assert.assertEquals(pages.calendarEventsPage().getStartDate(), pages.calendarEventsPage().getEndDate());

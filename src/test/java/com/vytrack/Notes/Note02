@@ -1,0 +1,138 @@
+how to have stale element ?
+xml runner
+how to run everyrthing
+from terminal
+run single class, package, method
+Frameworks
+module based
+data driver
+keyword drivern
+hybrid
+page object model
+bdd
+tell me aboutt your framework
+what's new in the final framework
+tools
+design
+what type tests
+package
+utilities
+reporting
+oop concepts
+how to create framework from scratch
+STALE ELEMENT exception
+you get staleementexception when the element is no longer attached to the DOM.
+page or part of page reloaded between the time we located the element and we want to
+interact with it
+1. locate the element again
+2. use page object model
+3. loop
+	 	 for 10 seconds{
+	 	 	 try
+	 	 	 	 click
+break
+	 	 	 catch staleexception
+	 	 	 	 wait 1 sec
+
+	 	 }
+xml
+suite
+	 	 test
+	 	 	 package
+	 	 	 	 class
+	 	 	 	 	 @TEst test method
+@Parameters("browser") --> this method get a parameter from xml runner
+"browser" --> name of the parameter
+ @Parameters("browser")
+ public void setup(@Optional String browser)
+xml file, @Parameters("browser"), the method signature must use the same param name
+@Optional --> if xml file does not pass the parameter, or if no parameter at all, do not throw
+exception
+mvn commands will run the pom file
+pom files will run the xml
+xml runner run the login tests. xml runners actuallly are the ones which target the java classes
+and run them.
+mvn verify
+mvn verify --> it runs a maven goal called verify.
+if we run with no parameters, it runs the hardcoded runner in the pom file
+mvn verify -Drunner=regression.xml
+we use this when we want to run specific file.
+-D --> we use this option when we pass variable from terminal
+runner --> name of the parameter
+regression.xml --> value of the parameter
+mvn verify -P Parameterized -Drunner=regression.xml
+-P Parameterized --> run profile called parametrized
+run a profile called parametrized, use resression.xml
+mvn clean verify : we are running 2 maven goals in the same command. it will run the clean
+command to delete the target folder
+then it will run the verify command to run the test and generate reports.
+mvn clean verify -P Parameterized -Drunner="regression.xml"
+mvn clean verify -P Parallel
+Framework?
+it is a set of tools connected to each other
+skeleton
+design patterns
+test automation framework system or an environment where we generate and execute
+tests. Test automation framework utilities multiple tools, design concepts in order to efficiently
+generate, execute and report automated tests. They use different practices, package
+structures, patters to make them understandable, easy to maintain, easy to scale, easy to
+expand , easy to troubleshoot, be more modular, reusable.
+Types of automation frameworks.
+Module based frameworks
+Data driven framework
+Keyword driven framework
+Behavior driven framework
+Hybrid framework
+Page object model based framework
+Module based frameworks
+ We organize tests based on the module/component which they are testing. In my Vytrack
+application we have such modules as calendar events, vehicles, contacts, accounts etc. and in
+our framework we have package for each modules. So when we want to do component based
+testing and run all tests related to one module, we can target that folder.
+Data driven framework TDD
+In DTF, tests are separated from the test data. And add allows to run single test cases against
+multiple sets of data without any code change. In DTF we have class, utilities that manage
+reading and writing from those files. Sources can be excel, csv, db, api
+Keyword driven framework
+Similar to TDD and uses external files like excel, csv to controls the test. But in KDF those files
+control the test flow. Excel file has which tests we run, to steps, keywords and also locators/
+objects.
+If it is implemented correctly, manual tests can write the test cases and add to the excel file.
+KDF will run the automatically.
+Behavior driven framework
+Focuses on business logic or functionalities. We have reusable methods that are based o
+business flow. Uses given, when, then keywords.
+Page object model based framework
+Framework where we create object repository based on the pages of the application. In ours
+vytrack application we have pages like login, createcalendarevernts etc…
+Allows separating selenium logic from the test logic.
+Hybrid framework
+A framework that uses elements of more than one test automation framework designs.
+how to create framework from scratch
+If my project has no experience with automation, first I have meeting with my team to discuss
+the tools and designs we can use for my framework. Based team discussion we used
+selenium with testng.
+• Create maven project
+• Add dependencies
+• Create packages
+• Add utils, test base, properties
+• Add page objects
+• Automate 1 scenario
+• Add reporting
+Once basic framework is ready I did a demo to my team on how it is running automated tests,
+and generating html reports. I showed an option on how it can take screenshots on failures.
+How did you use OOP concepts in your framework?
+Encapsulation
+driver class
+pages class
+Inheritance
+Test Base
+BasePage
+Abstraction
+BasePage
+page object model
+Polymorphism
+we have methods where we use methods overloading in our browser utility, driver class.
+WebDriver driver = new ChromeDriver();
+List<String> list = new ArrayList()<>;
+How did you use Collections in your gramework?

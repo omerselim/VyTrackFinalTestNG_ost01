@@ -57,9 +57,9 @@ public class CalendarEventsPage extends BasePage {
 
 
     public void selectGridSetting(String name, boolean yesOrNo) {
-        //click on grid options
+//        //click on grid options
         waitUntilLoaderScreenDisappear();
-        gridSettingsElement.click();
+//        gridSettingsElement.click();
         //create locator for grid option based on the name
         String locator = "//td//label[text()='" + name + "']/../following-sibling::td//input";
         //find element
@@ -69,8 +69,8 @@ public class CalendarEventsPage extends BasePage {
         //click on it
         //or
         //ckeckbox is selected and you want to unselect it
-        if ((yesOrNo == true && !gridOption.isSelected()) || (
-                yesOrNo == false && gridOption.isSelected())) {
+        if ((yesOrNo && !gridOption.isSelected()) || (         // yesOrNo == true  =  yesOrNo
+                !yesOrNo && gridOption.isSelected())) {        // yesOrNo == false  =  !yesOrNo
             gridOption.click();
         }
     }
@@ -93,8 +93,8 @@ public class CalendarEventsPage extends BasePage {
     public void selectStartOrEndDate(String date, String startOrEnd) {
         waitUntilLoaderScreenDisappear();
         LocalDate ld = LocalDate.of(Integer.parseInt(date.substring(date.lastIndexOf("/") + 1)),
-                Integer.parseInt(date.substring(0, date.indexOf("/"))),
-                Integer.parseInt(date.substring(date.indexOf("/") + 1, date.lastIndexOf("/"))));
+                                    Integer.parseInt(date.substring(0, date.indexOf("/"))),
+                                    Integer.parseInt(date.substring(date.indexOf("/") + 1, date.lastIndexOf("/"))));
 
         String month = DateTimeFormatter.ofPattern("MMM").format(ld);
         int year = ld.getYear();
@@ -201,7 +201,7 @@ public class CalendarEventsPage extends BasePage {
     public void clickOnCreateCalendarEvent() {
         waitUntilLoaderScreenDisappear();
         BrowserUtils.waitForStaleElement(createCalendarEventBtn);
-        BrowserUtils.waitForClickablility(createCalendarEventBtn, Integer.valueOf(ConfigurationReader.getProperty("SHORT_WAIT")));
+        BrowserUtils.waitForClickablility(createCalendarEventBtn, Integer.parseInt(ConfigurationReader.getProperty("SHORT_WAIT")));
         createCalendarEventBtn.click();
     }
 

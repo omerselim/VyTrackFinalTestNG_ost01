@@ -1,0 +1,40 @@
+----------------------------------------------------------------------------------------------------------------------------------
+
+String date = LocalDate.now().format(DateTimeFormatter.ofPattern("MM_dd_yyyy"));
+String filePath = System.getProperty("user.dir") + "/test-output/" + test + "/" + date + "/report.html";
+
+----------------------------------------------------------------------------------------------------------------------------------
+
+WebDriverWait wait = new WebDriverWait(driver, Long.valueOf("2"));
+WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(2));
+
+WebDriverWait wait = new WebDriverWait(Driver.getDriver(), Long.valueOf(ConfigurationReader.getProperty("explicitwait")));
+WebDriverWait wait = new WebDriverWait(Driver.getDriver(), Duration.ofSeconds(Long.valueOf(ConfigurationReader.getProperty("explicitwait"))));
+
+----------------------------------------------------------------------------------------------------------------------------------
+
+
+/**
+    * This method will take a screenshot
+    * @param name
+    * @return
+	* name the screenshot with the current date time to avoid duplicate name
+	* TakesScreenshot ---> interface from selenium which takes screenshots
+	* target :  full path to the screenshot location, save the screenshot to the path given
+    */
+   public static String getScreenshot(String name)  {
+       
+       String date = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy_MM_dd_hh_mm_ss"));
+       TakesScreenshot ts = (TakesScreenshot) Driver.getDriver();
+       File source = ts.getScreenshotAs(OutputType.FILE);
+       String target = System.getProperty("user.dir") + "/test-output/Screenshots/" + name + date + ".png";
+       File finalDestination = new File(target);
+ 
+       try {
+           FileUtils.copyFile(source, finalDestination);
+       } catch (IOException e) {
+           e.printStackTrace();
+       }
+       return target;
+   }
+----------------------------------------------------------------------------------------------------------------------------------
